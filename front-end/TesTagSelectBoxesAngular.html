@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Tag with AngularJS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body ng-app="selectApp">
+    <div ng-controller="selectControllerTipe1">
+
+        <select ng-model="hello"  ng-options="a for a in arr"></select>
+
+
+        <div>Hello , {{hello}}</div>
+
+    </div>
+
+    <div ng-controller="selectControllerTipe2">
+        <select ng-model="mobil">
+            <option ng-repeat="m in mobils">{{m}}</option>
+        </select>
+
+
+        <div>Hello , Your car : {{mobil}}</div>
+
+    </div>
+
+    <form ng-controller="formSelect">
+        <table>
+            <tr>
+                <td>Provinsi</td>
+                <td>
+                    <select ng-model="prov" ng-options="p for p in provinsi"></select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" style="width:100%;" ng-click="submitProv()" value="Submit Provinsi"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+    <script>
+        var app = angular.module('selectApp',[]);
+
+        app.controller('formSelect',function($scope){
+
+            $scope.provinsi = new Array("Sumsel","Sumbar","Sumut","Jabar");
+
+            $scope.submitProv = function (){
+                if($scope.prov === undefined ){
+                   alert('Provinsi belum dipilih');
+                }else{
+                    alert('Provinsi anda : ' + $scope.prov);
+                }
+            }
+
+        });
+
+        app.controller('selectControllerTipe2',function ($scope){
+            $scope.mobils = ['Ferrari','Lamborghini','Koenigsegg'];
+        });
+
+        app.controller('selectControllerTipe1',function($scope){
+            $scope.hello = "";
+            $scope.arr = ['A','B','C','D','E'];
+        });
+
+    </script>
+</html>

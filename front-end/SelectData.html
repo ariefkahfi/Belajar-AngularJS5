@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Data AngularJS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+
+<body ng-app="dataApp">
+
+
+      <table border="2" ng-controller="listController">
+          <tr>
+              <td>Id</td>
+              <td>Nama</td>
+              <td>Umur</td>
+          </tr>
+          <tr ng-repeat="d in data">
+              <td>{{d.id}}</td>
+              <td>{{d.nama}}</td>
+              <td>{{d.umur}}</td>
+          </tr>
+     </table>
+
+</body>
+    <script>
+        var app = angular.module('dataApp',[]);
+
+        var base_URL="angularjs-tableDan-angularjs-select-boxes";
+
+        app.controller('listController',function($scope,$http){
+            $http.get('http://localhost/'+base_URL+"/back-end/select.php").
+
+            then(
+                function success(response){
+                    $scope.data = response.data.person;
+                }
+
+                ,function error(response){
+
+                }
+            );
+        });
+
+    </script>
+
+</html>

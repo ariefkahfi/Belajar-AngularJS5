@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Delete AngularJS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body ng-app="deleteApp">
+    <form ng-controller="deleteController">
+        <table>
+            <tr>
+                <td>Id</td>
+                <td><input type="number" ng-model="id" id="deleteId" placeholder="Person id"/></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="width: 100%;">
+                    <input type="submit" value="Delete Data Person" ng-click="deleteData(id)"/>
+                </td>
+            </tr>
+        </table>
+        <div id="ajax-response"></div>
+    </form>
+</body>
+    <script>
+        var app = angular.module('deleteApp',[]);
+
+        app.controller('deleteController',function($scope,$http){
+
+           $scope.deleteData = function (id){
+             if(id === '' || id === undefined
+                 || document.getElementById('deleteId').value ===  ''
+                 || document.getElementById('deleteId').value === undefined){
+                 alert('Form masih ada yang kosong');
+                 angular.element(document.querySelector('#ajax-response')).text('');
+             }else{
+                $http({
+                   method:"GET",
+                   url:"http://localhost/angularjs-tableDan-angularjs-select-boxes/back-end/delete.php",
+                   headers:{"Content-type":"application/x-www-form-urlencoded"},
+                   params:{"id":id}
+                }).then(function ok(response){
+                    if(response.data !== ''){
+                        angular.element(document.querySelector('#ajax-response')).text(response.data);
+                    }
+
+                    document.getElementById('deleteId').value = "";
+
+                    console.log(response);
+                },function error(response){
+                    console.log(response);
+                });
+             }
+           }
+
+        });
+
+    </script>
+</html>

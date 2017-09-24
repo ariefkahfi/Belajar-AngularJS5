@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body ng-app="formApp">
+
+    <form ng-controller="formController">
+        <table>
+            <tr>
+                <td>Nama</td>
+                <td><input type="text" name="nama" id="nama" ng-model="nama" placeholder="Your Name"/></td>
+            </tr>
+            <tr>
+                <td>Umur</td>
+                <td><input type="number" name="umur" id="umur" ng-model="umur" placeholder="Your Age"/></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="width: 100%;">
+                    <input type="submit" ng-click="insertData()" value="Insert Data"/>
+                </td>
+            </tr>
+        </table>
+        <div id="ajax-response"></div>
+    </form>
+
+
+
+</body>
+    <script>
+        var app = angular.module('formApp',[]);
+
+
+        app.controller('formController',function($scope,$http,$httpParamSerializer){
+
+            $scope.nama = "";
+            $scope.umur = 0;
+
+
+            $scope.insertData = function () {
+                if($scope.nama === ''
+                    || $scope.nama === undefined
+                    || $scope.umur === 0
+                    || $scope.umur === undefined
+                    || $scope.umur <= 0){
+                   alert('Masih Ada form yang kosong');
+                }else{
+
+
+                  $http({
+                     method:"POST",
+                     url:"http://localhost/angularjs-tableDan-angularjs-select-boxes/back-end/insert.php",
+                     headers:{"Content-type":"application/x-www-form-urlencoded"},
+                     data:$httpParamSerializer({
+                        "nama":$scope.nama,
+                        "umur":$scope.umur
+                     })
+                  }).then(function success(respose){
+
+                      document.getElementById('nama').value = "";
+                      document.getElementById('umur').value = 0;
+
+                      angular.element(document.querySelector('#ajax-response')).text(respose.data);
+                      console.log(respose);
+                  },function error(response){
+                      console.log(response);
+                  });
+
+                }
+            };
+        });
+
+
+
+    </script>
+</html>
